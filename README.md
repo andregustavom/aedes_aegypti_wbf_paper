@@ -139,7 +139,7 @@ print(lm_W)
 print(summary(lm_W))
 
 ```
-
+Logo: ![Alt](/wp.png "Title")
 
 ## Does the temperature impact the wingbeat frequency?
 
