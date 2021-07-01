@@ -1,3 +1,4 @@
+#Libraries required
 library(cowplot) 
 library(ggplot2)
 library(lme4)
@@ -85,7 +86,7 @@ lm_WL <- lm(Wbf ~ WingLength, data=dtx)
 print(lm_WL)
 print(summary(lm_WL))
 
-print("-------------------------------------------------------------------")
+print("----------------------------------------------------------")
 
 lm_W <- lm(Wbf ~ Weight, data=dtx)
 print(lm_W)
