@@ -10,6 +10,8 @@ t_wingLength <- t.test(data_1$WingLength ~ data_1$Density)
 
 print(t_wingLength)
 
+print("--------------------------------------------")
+
 t_weight <- t.test(data_1$Weight ~ data_1$Density)
 
 print(t_weight)
