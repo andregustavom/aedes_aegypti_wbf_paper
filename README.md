@@ -9,9 +9,16 @@ library(lme4)
 library(emmeans)
 ```
 
-## Analysis 1
+### The experiments were conducted with females Aedes aegypti mosquitoes.
+
+
+## Does mosquitoes reared at two different larval densities vary in size?
+
+The difference between the body sizes (wing length and dry weight) from the high and low larval density rearing conditions was analyzed using an unpaired t-test.
+
 
 ```r
+
 data_1 <- read.csv("data/data_1.csv")
 t_wingLength <- t.test(data_1$WingLength ~ data_1$Density)
 print(t_wingLength)
@@ -20,9 +27,40 @@ print(t_weight)
 
 ```
 
-## Analysis 2
+
+## Does mosquitoes' size impact the wingbeat frequency?
+
+To examine whether mosquitoes from low and high larval densities differed in wingbeat frequency, we performed an analysis of covariance (ANCOVA) to test for the differences in intercept or slope with size measurements (wing length and weight) as covariates, wingbeat frequency as the response variable, and larval density (high and low) as an independent variable.
+
 
 ```r
+
+mod_ancova <- aov(Wbf ~ WingLength*Weight + Density, data=dtx)
+print(summary(mod_ancova))
+
+```
+
+
+## Is there a significant difference between the mean wingbeat frequency of mosquitoes from low and high larval densities?
+
+To assess differences between the mean wingbeat frequency of females from low and high larval densities we performed a t-test.
+
+
+```r
+
+print(t.test(data_2$Wbf ~ data_2$Density)) 
+
+```
+
+
+## Is there any correlation between the wingbeat frequency and wing length, and dry weight?
+
+To demonstrate the correlation between the variables, we performed a linear regression and scatter plot of the female Aedes aegypti wingbeat frequency versus the wing length and dry weight. 
+
+
+
+```r
+
 data_2 <- read.csv("data/data_2.csv")
 
 plot_scatter_density <- function(dt, x1, y1, xcolor, xlim, ylim, x_label, s_colors){
@@ -88,11 +126,7 @@ names(dtx) <- c("Mosquito","Density", "Weight", "WingLength", "Temperature","Wbf
 plot_scatter_density(dtx, "Weight", "Wbf", "Density", c(0.18, 1.9), c(500, 605), "Dry weight (mg)",s_colors =  s_colors_female)
 plot_scatter_density(dtx, "WingLength", "Wbf", "Density", c(2.3, 3.15), c(500, 605), "Wing length (mm)",s_colors =  s_colors_female)
 
-```
 
-## Analysis 3
-
-```r
 
 lm_WL <- lm(Wbf ~ WingLength, data=dtx)
 print(lm_WL)
@@ -104,23 +138,13 @@ lm_W <- lm(Wbf ~ Weight, data=dtx)
 print(lm_W)
 print(summary(lm_W))
 
-
-#---------------------------------------------------------------------------
-mod_ancova <- aov(Wbf ~ WingLength*Weight + Density, data=dtx)
-print(summary(mod_ancova))
-
 ```
 
 
-## Analysis 4
+## Does the temperature impact the wingbeat frequency?
 
-```r
+We performed a box plot showing the effect of temperature on wingbeat frequency.
 
-print(t.test(data_2$Wbf ~ data_2$Density)) 
-
-```
-
-## Analysis 5
 
 ```r
 
@@ -158,9 +182,14 @@ p1 <- ggplot(re, aes(x = Range, y = Wbf,fill=Density))+
   theme(axis.line = element_line(color = 'black'))
 
 print(p1)
+
 ```
 
-## Analysis 6
+
+## What are the effects of temperature and body size on the wingbeat frequency?
+
+The effects of temperature and body size, as well as their interactions were analyzed via a linear mixed model (LMM) with each group of 10 mosquitoes considered a random effect.  
+
 
 ```r
 
@@ -179,6 +208,5 @@ print("----------------------------------------------------")
 print(anova(model))
 print("----------------------------------------------------")
 print(emmeans(model, pairwise ~ Range + Density + Range:Density, adjust = "tukey"))
-
 
 ```
