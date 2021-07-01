@@ -1,4 +1,13 @@
-Supplemental material for the paper: The impact of body size on Aedes [Stegomyia] aegypti wingbeat frequency: implications for mosquito identification
+### The impact of body size on Aedes [Stegomyia] aegypti wingbeat frequency: implications for mosquito identification
+Supplemental material for the paper
+
+#### Barbara de Nadai<sup>1</sup>, André Maletzke<sup>2</sup>, Juliano Corbi<sup>1</sup>, Gustavo Batista<sup>3</sup>, and Michael Reiskind<sup>4</sup>
+
+<sup>1</sup> University of São Paulo </p>
+<sup>2</sup> Western Parana State University </p>
+<sup>3</sup> University of New South Wales </p>
+<sup>4</sup> North Carolina State University 
+
 
 ## Libraries required for data analysis
 
@@ -18,13 +27,13 @@ The difference between the body sizes (wing length and dry weight) from the high
 
 
 ```r
-
 data_1 <- read.csv("data/data_1.csv")
+
 t_wingLength <- t.test(data_1$WingLength ~ data_1$Density)
 print(t_wingLength)
+
 t_weight <- t.test(data_1$Weight ~ data_1$Density)
 print(t_weight)
-
 ```
 
 
@@ -34,7 +43,6 @@ To examine whether mosquitoes from low and high larval densities differed in win
 
 
 ```r
-
 mod_ancova <- aov(Wbf ~ WingLength*Weight + Density, data=dtx)
 print(summary(mod_ancova))
 
@@ -47,7 +55,6 @@ To assess differences between the mean wingbeat frequency of females from low an
 
 
 ```r
-
 print(t.test(data_2$Wbf ~ data_2$Density)) 
 
 ```
@@ -64,7 +71,6 @@ To demonstrate the correlation between the variables, we performed a linear regr
 data_2 <- read.csv("data/data_2.csv")
 
 plot_scatter_density <- function(dt, x1, y1, xcolor, xlim, ylim, x_label, s_colors){
-  
   # Main plot
   pmain <- ggplot(dt, aes_string(x = x1, y = y1, color = xcolor))+
     geom_point(aes_string(color=xcolor), size=5)+
@@ -120,13 +126,16 @@ dtx <- as.data.frame(aggregate(list(data_2[,c("Temperature","Wbf")]), by=list(da
                                                                               data_2$Density, 
                                                                               data_2$Weight, 
                                                                               data_2$WingLength), FUN=mean))
+                                                                              
 names(dtx) <- c("Mosquito","Density", "Weight", "WingLength", "Temperature","Wbf")
 
-
-plot_scatter_density(dtx, "Weight", "Wbf", "Density", c(0.18, 1.9), c(500, 605), "Dry weight (mg)",s_colors =  s_colors_female)
-plot_scatter_density(dtx, "WingLength", "Wbf", "Density", c(2.3, 3.15), c(500, 605), "Wing length (mm)",s_colors =  s_colors_female)
-
-
+plot_scatter_density(dtx, "Weight", "Wbf", "Density", 
+                    c(0.18, 1.9), c(500, 605), "Dry weight (mg)",
+                    s_colors =  s_colors_female)
+                    
+plot_scatter_density(dtx, "WingLength", "Wbf", "Density", 
+                    c(2.3, 3.15), c(500, 605), "Wing length (mm)",
+                    s_colors =  s_colors_female)
 
 lm_WL <- lm(Wbf ~ WingLength, data=dtx)
 print(lm_WL)
@@ -139,7 +148,13 @@ print(lm_W)
 print(summary(lm_W))
 
 ```
-Logo: ![Alt](/wp.png "Title")
+
+<p float="center">
+  <img src="plots/wbf_wingLength.png" width="400" height="300"/>
+  <img src="plots/wbf_dryWeight.png" width="400" height="300"/>
+</p>
+
+
 
 ## Does the temperature impact the wingbeat frequency?
 
@@ -147,9 +162,7 @@ We performed a box plot showing the effect of temperature on wingbeat frequency.
 
 
 ```r
-
 re <- read.csv("data/data_3.csv")
-
 
 cols <- c("Low larval density" = "#548DCB", "High larval density"="#F0CB52")
 
@@ -185,6 +198,7 @@ print(p1)
 
 ```
 
+<img src="plots/wbf_temperature.png" width="600" height="400"/>
 
 ## What are the effects of temperature and body size on the wingbeat frequency?
 
@@ -192,7 +206,6 @@ The effects of temperature and body size, as well as their interactions were ana
 
 
 ```r
-
 re <- read.csv("data/data_4.csv")
 
 re$Tray <- as.factor(re$Tray)
